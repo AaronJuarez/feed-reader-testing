@@ -57,8 +57,9 @@ $(function() {
             menuHidden,
             menuClass;
 
+        //Asign DOM elements to variables before each spec
         beforeEach(function(done) {
-            menuHidden = document.getElementsByTagName('body')[0];
+            menuHidden = document.getElementsByClassName('menu-hidden')[0];
             menuIcon = document.getElementsByClassName('menu-icon-link')[0];
             done();
         });
@@ -68,8 +69,10 @@ $(function() {
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+
+        //if menu is hidden, menuHidden should be defined
         it('is hidden', function(done) {
-            expect(menuHidden.length).not.toBe(0);
+            expect(menuHidden).toBeDefined();
             done();
         });
 
@@ -81,10 +84,12 @@ $(function() {
         it('toggles on click', function(done) {
             menuIcon.click();
             menuClass = menuHidden.className;
+            //menu-hidden class should be removed
             expect(menuClass).toBe('');
 
             menuIcon.click();
             menuClass = menuHidden.className;
+            //menu-hidden class should be added
             expect(menuClass).toBe('menu-hidden');
 
             done();
@@ -102,12 +107,17 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+
+        //run loadFeed function before spec
         beforeEach(function(done) {
-            loadFeed(0, done);
+            loadFeed(2, function() {
+                done();
+            });
         });
 
         it('at least one', function(done) {
             var entry = document.getElementsByClassName('entry');
+            //entry array should contain at least one element
             expect(entry.length).not.toBe(0);
             done();
         });
@@ -117,28 +127,34 @@ $(function() {
 
     describe('New Feed Selection', function() {
         var headerTitle,
-            firstFeed,
+            firstEntry,
             newHeaderTitle,
-            newFirstFeed;
+            newFirstEntry;
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+
+         //run loadFeed before spec
          beforeEach(function(done) {
             loadFeed(2, function(){
+                //callback function to get refreshed dom elements
                 headerTitle = document.getElementsByClassName('header-title')[0].textContent;
-                firstFeed = document.getElementsByClassName('entry')[0].textContent;
+                firstEntry = document.getElementsByClassName('entry')[0].textContent;
                 done();
             });
          });
 
          it('loads new feed', function(done) {
+            //call loadFeed again to check elements change
             loadFeed(0, function(){
+                //callback function to get refreshed dom elements
                 newHeaderTitle = document.getElementsByClassName('header-title')[0].textContent;
-                newFirstFeed = document.getElementsByClassName('entry')[0].textContent;
+                newFirstEntry = document.getElementsByClassName('entry')[0].textContent;
+                //expect headers and entry not to be the same given the loadFeed call of different feed
                 expect(headerTitle).not.toEqual(newHeaderTitle);
-                expect(firstFeed).not.toEqual(newFirstFeed);
+                expect(firstEntry).not.toEqual(newFirstEntry);
                 done();
             });
 
