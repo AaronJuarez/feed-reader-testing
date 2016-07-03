@@ -3,6 +3,7 @@
 ## To run
 - Download or fork the application from [here](https://github.com/AaronJuarez/feed-reader-testing)
 - Select ```index.html``` to start the app
+- You can find a version of the app running [here](http://aaronjuarez.github.io/feed-reader-testing/)
 
 ### Running Grunt
 ----------------------------
