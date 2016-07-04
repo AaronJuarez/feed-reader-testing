@@ -31,58 +31,50 @@ $(function() {
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
-         it('url is defined and is not empty', function() {
+        it('url is defined and is not empty', function() {
             allFeeds.forEach(function(feed) {
                 expect(feed.url).toBeDefined();
                 expect(feed.url.length).not.toBe(0);
             });
-         });
+        });
 
         /* Test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
-         it('name is defined and is not empty', function() {
+        it('name is defined and is not empty', function() {
             allFeeds.forEach(function(feed) {
                 expect(feed.name).toBeDefined();
                 expect(feed.name.length).not.toBe(0);
             });
-         });
+        });
     });
 
 
     /* Test suite named "The menu" */
     describe('The menu', function() {
-        var menuIcon,
-            menuHidden,
-            menuClass;
-
-        //Asign DOM elements to variables before each spec
-        beforeEach(function() {
-            menuHidden = $('body');
-            menuIcon = $('.menu-icon-link');
-        });
+        var $bodyElem = $('body'),
+            $menuIcon = $('.menu-icon-link');
 
         /* Test that ensures the menu element is
          * hidden by default.
-         */
-
-        //if menu is hidden, menuHidden should be defined
+         *if menu is hidden, $bodyElem should be defined
+        */
         it('is hidden', function() {
-            expect(menuHidden).toBeDefined();
+            expect($($bodyElem).hasClass('menu-hidden')).toBeTruthy();
         });
 
          /* Test that ensures the menu changes
           * visibility when the menu icon is clicked.
           */
         it('toggles on click', function() {
-            menuIcon.click();
+            $menuIcon.click();
             //menu-hidden class should be removed
-            expect($(menuHidden).hasClass('menu-hidden')).toBeFalsy();
+            expect($($bodyElem).hasClass('menu-hidden')).toBeFalsy();
 
-            menuIcon.click();
+            $menuIcon.click();
             //menu-hidden class should be added
-            expect($(menuHidden).hasClass('menu-hidden')).toBeTruthy();
+            expect($($bodyElem).hasClass('menu-hidden')).toBeTruthy();
 
         });
 
@@ -102,11 +94,10 @@ $(function() {
             loadFeed(2, done);
         });
 
-        it('at least one', function(done) {
-            var entry = document.getElementsByClassName('entry');
+        it('at least one', function() {
+            var entry = document.querySelectorAll('.feed .entry');
             //entry array should contain at least one element
             expect(entry.length).not.toBe(0);
-            done();
         });
     });
 
@@ -123,16 +114,16 @@ $(function() {
          */
 
          //run loadFeed before spec
-         beforeEach(function(done) {
+        beforeEach(function(done) {
             loadFeed(2, function(){
                 //callback function to get refreshed dom elements
                 headerTitle = document.getElementsByClassName('header-title')[0].textContent;
                 firstEntry = document.getElementsByClassName('entry')[0].textContent;
                 done();
             });
-         });
+        });
 
-         it('loads new feed', function(done) {
+        it('loads new feed', function(done) {
             //call loadFeed again to check elements change
             loadFeed(0, function(){
                 //callback function to get refreshed dom elements
@@ -144,7 +135,7 @@ $(function() {
                 done();
             });
 
-         });
+        });
 
     });
 
